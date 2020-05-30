@@ -1,0 +1,165 @@
+/* {{pp-template}} */
+#covid19-container {
+	box-sizing: border-box; /* otherwise on mobile the table will stick to the left gutter - see https://phabricator.wikimedia.org/T247702#5976282 */
+	float: right;
+	max-width: 100%;
+	max-height: 75vh;
+	height: 50.25em;
+	overflow: auto;
+	/* On some desktop browsers (firefox on linux and macOS at least), the scrollbar comes out of the element, and if we don't have some padding, it overlaps the ref column */
+	padding-right: 18px;
+}
+
+
+.covid-show-table {
+	float: right;
+	font-size: 75%;
+}
+
+#covid19-container:target .covid-show-table {
+	display: none;
+}
+
+#covid19-container:target {
+	max-width: none;
+	max-height: none;
+	height: auto;
+	overflow-y: visible;
+	padding-right: 0;
+}
+
+/* needs to be specific */
+body th.covid-total-row {
+	text-align: right !important;
+	padding-right: 16px;
+}
+
+@media print {
+	#covid19-container {
+		max-width: none;
+		max-height: none;
+		height: auto;
+		overflow-y: visible;
+		padding-right: 0;
+	}
+	.covid-show-table {display: none;}
+}
+
+
+@media screen {
+	.covid-sticky th {
+		position: sticky;
+		/* firefox works best with 0.9px to show top border, chrome wants 0. or it will show stuff behind. */
+		top: 0;
+		/* hack for firefox */
+		background-clip: padding-box;
+		/* to avoid overlapping references */
+		z-index: 10;
+	}
+	
+	/* based on https://stackoverflow.com/questions/50361698/border-style-do-not-work-with-sticky-position-element */
+	
+	.covid-sticky th:after,
+	.covid-sticky th:before {
+	  content: '';
+	  position: absolute;
+	  left: 0;
+	  width: 100%;
+	}
+	.covid-sticky th:before {
+	  /* make it overlap with top border before scrolling */
+	  top: -1px;
+	  border-top: 1px solid #a2a9b1;
+	}
+	.covid-sticky th:after {
+	  bottom: -1px;
+	  border-bottom: 1px solid #a2a9b1;
+	}
+}
+/* Make country line wrap if on small screen */
+@media ​only screen and (max-width: 650px) {
+	.covid-country-narrow-on-mobile {width: 12ch;}
+
+	/* needs to be specific */
+	body th.covid-total-row {padding-right: 3px;}
+}
+
+/* For mobile devices */
+@media only screen and (max-width: 500px) {
+	#covid19-container {
+		/* the scrollbar problem reference above doesn't seem to be an issue on mobile,
+		   and is currently causing the table to be clipped
+		   checked iOS (Firefox, Safari, Chrome), and Android (Firefox, Chrome) */
+		padding-right: 0px;
+		/* create space between tablbe and the section hatnote above */
+		margin-top: 10px;
+	}
+	
+	/* float the [show more] element to the left */
+	.covid-show-table {float: left;}
+	
+	/* hide the V • T • E element */
+	.plainlinks.hlist.navbar.mini {display: none;}
+	
+	/* float the table header left */
+	.plainlinks.hlist.navbar.mini + div {
+		margin: 0 !important;
+		float: left;
+	}
+	
+	/* text alignn left for the country heading left */
+	.covid-country-narrow-on-mobile {text-align: left !important;}
+	
+	/* text alignn left for the first total-row cell left */
+	.covid-total-row:first-of-type {text-align: left !important;}
+	
+	/* text alignn left for all country names */
+	#covid19-container table tbody>tr>:nth-child(2) {
+		text-align: left;
+   ​	padding-left: 5px !important;
+	}
+	
+	/* reduce font-weight for all country names */
+	#covid19-container table tbody>tr>:nth-child(2)>a {font-weight: 500;}
+
+}
+
+/* For mobile app page content service - https://en.wikipedia.org/api/rest_v1/page/mobile-html/Template:2019%E2%80%9320_coronavirus_pandemic_data */
+.pcs-collapse-table-container .covid-show-table {display: none;}
+
+#covid19-container td {padding: 0 2px;}
+
+#covid19-container th[scope=row]:not(.covid-total-row) {
+	padding: 0 2px 0 1px;
+	border-left: none;
+}
+
+#covid19-container th[scope=row]:first-child:not(.covid-total-row) {
+	padding: 0 2px 1px;
+	width: 1px;
+	border-right: none;
+}
+
+#covid19-container .status-a {background: #ffd;text-align: center;}
+
+#covid19-container .status-a:after {content: "Admitted";}
+
+#covid19-container .status-r {background: #bfb;text-align: center;}
+
+#covid19-container .status-r:after {content: "Recovered";}
+
+#covid19-container .status-d {background: #fbb;text-align: center;}
+
+#covid19-container .status-d:after {content: "Died";}
+
+#covid19-container .yes {background: #9f9;text-align: center;}
+
+#covid19-container .yes:after {content: "Yes";}
+
+#covid19-container .no {background: #f99;text-align: center;}
+
+#covid19-container .no:after {content: "No"}
+
+#covid19-container .tba {background: #ddf;color: #2c2c2c;text-align: center;font-size: 85%;}
+
+#covid19-container .tba:after {content: "TBA";}
